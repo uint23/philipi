@@ -28,14 +28,15 @@ void run(void)
 
 	while (read(STDIN_FILENO, &input, 1) == 1) {
 		if (input == 'q') {
-			printf(NL);
 			exit_cleanup();
 		}
-#ifdef a
+		else if (input == '\r') {
+			raw_write_buff(NL, 2);
+		}
 		else {
-			unsigned int *chars_len = &editor.row.length;
+			unsigned int* chars_len = &editor.row.length;
 
-			char *new_chars = realloc(editor.row.chars, *chars_len + 2); /* +1 for \0 */
+			char* new_chars = realloc(editor.row.chars, *chars_len + 2); /* +1 for \0 */
 			if (new_chars == NULL) {
 				fprintf(stderr, "realloc of editor.row.chars failed...");
 				break;
@@ -47,17 +48,7 @@ void run(void)
 
 			editor.row.chars = new_chars;
 
-			printf("%c", editor.row.chars[*chars_len-1]);
-			fflush(stdout);
-		}
-#endif
-		else if (input == '\r' || input == '\n') {
-			printf(NL);
-			fflush(stdout);
-		}
-		else {
-			printf("%c", input);
-			fflush(stdout);
+			raw_write_char(&input);
 		}
 	}
 }

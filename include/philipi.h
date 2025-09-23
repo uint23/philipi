@@ -1,7 +1,5 @@
 #pragma once
 
-#define SIZEOF_ARR(x) (sizeof(x) / sizeof(x[0]))
-
 #define NL "\r\n"
 
 enum mode {
@@ -10,7 +8,7 @@ enum mode {
 
 struct row {
 	unsigned int  length;
-	char         *chars;
+	char*         chars;
 };
 
 struct editor {

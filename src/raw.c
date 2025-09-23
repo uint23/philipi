@@ -1,8 +1,9 @@
+#include <stdio.h>
 #include <unistd.h>
 
 #include "raw.h"
 
-void enable_raw_mode(struct termios *term)
+void enable_raw_mode(struct termios* term)
 {
 	term->c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	term->c_oflag &= ~(OPOST);
@@ -15,7 +16,21 @@ void enable_raw_mode(struct termios *term)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, term);
 }
 
-void disable_raw_mode(struct termios *original_term)
+void disable_raw_mode(struct termios* original_term)
 {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, original_term);
+}
+
+void raw_write_buff(const char* buff, size_t buff_len)
+{
+	if (write(STDOUT_FILENO, buff, buff_len) == -1) {
+		fprintf(stderr, "failed to write");
+	}
+}
+
+void raw_write_char(const char* c)
+{
+	if (write(STDOUT_FILENO, c, 1) == -1) {
+		fprintf(stderr, "failed to write");
+	}
 }

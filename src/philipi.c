@@ -27,8 +27,11 @@ void run(void)
 	char input;
 
 	while (read(STDIN_FILENO, &input, 1) == 1) {
-		if (input == 'q')
+		if (input == 'q') {
+			printf(NL);
 			exit_cleanup();
+		}
+#ifdef a
 		else {
 			unsigned int *chars_len = &editor.row.length;
 
@@ -45,6 +48,15 @@ void run(void)
 			editor.row.chars = new_chars;
 
 			printf("%c", editor.row.chars[*chars_len-1]);
+			fflush(stdout);
+		}
+#endif
+		else if (input == '\r' || input == '\n') {
+			printf(NL);
+			fflush(stdout);
+		}
+		else {
+			printf("%c", input);
 			fflush(stdout);
 		}
 	}
